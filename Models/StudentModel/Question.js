@@ -40,6 +40,11 @@ const StudentQuestionSchema = new mongoose.Schema({
     enum: ["pending", "completed"],
     default: "pending",
   },
+  Price:{
+    type: String,
+    required: true
+
+  },
   
   Teacher :{
     type: mongoose.Types.ObjectId,

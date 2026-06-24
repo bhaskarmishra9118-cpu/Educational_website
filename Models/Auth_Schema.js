@@ -17,13 +17,13 @@ const AuthSchema =new mongoose.Schema({
   },
   phone:{
     type:Number,
-    required:true,
+    
     length:10,
     
   },
   otp:{
     type:String,
-    required:true,
+    
   },
   role:{
     type:String,
