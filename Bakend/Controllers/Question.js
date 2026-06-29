@@ -4,7 +4,7 @@ const Question = require("../Models/StudentModel/Question");
 exports.createQuestions = async (req, res) => {
   const { Subject, TopicName, Title, Description, questiontype, status, price } = req.body;
   try {
-    if (!Subject, TopicName, Title, Description, price, questiontype) {
+    if (!Subject || !TopicName || !Title || !Description || !price || !questiontype) {
       res.status(400).json({
         success: false,
         message: "Failed to create question please enter all required fields",

@@ -2,7 +2,7 @@ const LiveSession = require("../Models/LiveSession");
 
 exports.createRequest = async (req, res) => {
   try {
-    const { teacherId, scheduledAt, price, durationMinutes } = req.body;
+    const { teacher,student, scheduledAt, price, durationMinutes } = req.body;
     const session = await LiveSession.create({
       student: req.user.id,
       teacher: teacherId,
@@ -15,6 +15,7 @@ exports.createRequest = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
+
 
 exports.teacherRespond = async (req, res) => {
   try {
