@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import {Api} from "../api/axios"
+import Api from "../api/axios"
 
 const Register = () => {
   const [formData, setFormData] = useState({
