@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-//import { api } from "../lib/api"
+import {Api} from "../api/axios"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,23 +19,23 @@ const Register = () => {
   const submitform = async (event) => {
     event.preventDefault()
 
-    // try {
-    //   await api.post("/auth/register", formData, { withCredentials: false })
-    //   window.alert("User Registered Successfully")
-    // } catch (err) {
-    //   console.log(err.response?.data || err.message)
-    //   if (!err.response) {
-    //     alert("Network/CORS error. Check Render CORS_ORIGINS and backend status.")
-    //   } else if (err.response?.status === 409) {
-    //     alert("Email Already Exist ")
-    //   } else if (err.response?.status === 400 && err.response?.data?.message === "All fields are required") {
-    //     alert("All fields are required")
-    //   } else if (err.response?.status === 400 && err.response?.data?.message === "Invalid email format") {
-    //     alert("Invalid email format")
-    //   } else if (err.response?.status === 400 && err.response?.data?.message === "Password must be at least 6 characters") {
-    //     alert("Password must be at least 6 characters")
-    //   }
-    // }
+    try {
+      await Api.post("api/auth/register", formData, { withCredentials:true })
+      window.alert("User Registered Successfully")
+    } catch (err) {
+      console.log(err.response?.data || err.message)
+      if (!err.response) {
+        alert("Network/CORS error. Check Render CORS_ORIGINS and backend status.")
+      } else if (err.response?.status === 409) {
+        alert("Email Already Exist ")
+      } else if (err.response?.status === 400 && err.response?.data?.message === "All fields are required") {
+        alert("All fields are required")
+      } else if (err.response?.status === 400 && err.response?.data?.message === "Invalid email format") {
+        alert("Invalid email format")
+      } else if (err.response?.status === 400 && err.response?.data?.message === "Password must be at least 6 characters") {
+        alert("Password must be at least 6 characters")
+      }
+    }
   }
 
   return (
