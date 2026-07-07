@@ -1,4 +1,4 @@
-const mongoose = require(mongoose);
+const mongoose = require("mongoose");
 
 const StudentQuestionSchema = new mongoose.Schema({
   Subject: {
@@ -9,9 +9,10 @@ const StudentQuestionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Student: {
+  student: {
     type: mongoose.Types.ObjectId,
-    ref: "Auth_Schema",
+    ref: "Auth",
+    required: true,
   },
   Title: {
     type: String,
@@ -19,7 +20,6 @@ const StudentQuestionSchema = new mongoose.Schema({
   },
   UploadImage: {
     type: String,
-    required: true,
   },
   Description: {
     type: String,
@@ -32,7 +32,7 @@ const StudentQuestionSchema = new mongoose.Schema({
   },
   questionType: {
     type: String,
-    enum: ["VIDEO","LIVE"],
+    enum: ["VIDEO", "LIVE"],
     required: true,
   },
   paymentStatus: {
@@ -40,17 +40,23 @@ const StudentQuestionSchema = new mongoose.Schema({
     enum: ["pending", "completed"],
     default: "pending",
   },
-  Price:{
-    type: String,
-    required: true
-
+  price: {
+    type: Number,
+    required: true,
   },
-  
-  Teacher :{
+  teacher: {
     type: mongoose.Types.ObjectId,
-    ref: "Auth_Schema",
+    ref: "Auth",
     default: null,
   },
-});
+  answerText: {
+    type: String,
+    default: null,
+  },
+  videoUrl: {
+    type: String,
+    default: null,
+  },
+}, { timestamps: true });
 
 module.exports = mongoose.model("StudentQuestion", StudentQuestionSchema);

@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const { createRequest, teacherRespond, uploadVideoSolution } = require("../Controllers/LiveSession");
+const {
+  createRequest,
+  getStudentSessions,
+  getTeacherSessions,
+  teacherRespond,
+  uploadVideoSolution,
+} = require("../Controllers/LiveSession");
 const { AuthMiddleware } = require("../Middlewares/AuthMiddleware");
 
 router.post("/request", AuthMiddleware, createRequest);
+router.get("/student", AuthMiddleware, getStudentSessions);
+router.get("/teacher", AuthMiddleware, getTeacherSessions);
 router.post("/request/:sessionId/respond", AuthMiddleware, teacherRespond);
 router.post("/request/:sessionId/video", AuthMiddleware, uploadVideoSolution);
 
-module.exports = router;
+module.exports = router

@@ -1,44 +1,13 @@
- export const menus ={
-  student:[
-    {label: "DashBoard",
-    path: "/student/dashboard"
-    },
-    {
-      label: "Ask Question",
-      path: "student/askquestion"
-    },
-    {
-      label: "My Questions ",
-      path: "student/myquesion"
-    },
-    {
-      label: "My Profile",
-      path:"student/profile"
-    },
-    {
-      label:"Dashboard",
-      path:"student/dashboard"
-    }
-
+﻿export const menus = {
+  student: [
+    { label: "Dashboard", path: "/student" },
+    { label: "Ask Question", path: "/student/ask-question" },
+    { label: "My Questions", path: "/student/my-questions" },
+    { label: "My Profile", path: "/student/profile" },
   ],
-  teacher:[
-    {
-      label: "Dashboard",
-      path: '/teacher/dashboard'
-    },
-       {
-      label: "Pending Questions",
-      path: '/teacher/questions'
-    },
-       {
-      label: "Earning",
-      path: '/teacher/earnings'
-    },
-    
-    
-    
-
-  ]
-  
-  }
-
+  teacher: [
+    { label: "Dashboard", path: "/teacher" },
+    { label: "Pending Questions", path: "/teacher/questions" },
+    { label: "Earnings", path: "/teacher/earnings" },
+  ],
+};

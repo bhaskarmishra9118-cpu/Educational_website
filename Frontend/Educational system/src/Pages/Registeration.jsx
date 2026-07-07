@@ -1,42 +1,40 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import Api from "../api/axios"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../api/authapi";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
   const change = (event) => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const submitform = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
-      await Api.post("api/auth/register", formData, { withCredentials:true })
-      window.alert("User Registered Successfully")
+      await registerUser(formData);
+      window.alert("User Registered Successfully");
+      navigate("/login");
     } catch (err) {
-      console.log(err.response?.data || err.message)
+      console.log(err.response?.data || err.message);
       if (!err.response) {
-        alert("Network/CORS error. Check Render CORS_ORIGINS and backend status.")
+        alert("Network/CORS error. Check backend status and CORS configuration.");
       } else if (err.response?.status === 409) {
-        alert("Email Already Exist ")
-      } else if (err.response?.status === 400 && err.response?.data?.message === "All fields are required") {
-        alert("All fields are required")
-      } else if (err.response?.status === 400 && err.response?.data?.message === "Invalid email format") {
-        alert("Invalid email format")
-      } else if (err.response?.status === 400 && err.response?.data?.message === "Password must be at least 6 characters") {
-        alert("Password must be at least 6 characters")
+        alert("Email already exists.");
+      } else {
+        alert(err.response.data?.message || "Registration failed.");
       }
     }
-  }
+  };
 
   return (
     <div className="flex h-screen items-center justify-center bg-linear-to-r from- black-50 via-gray-600 to-pink-30">

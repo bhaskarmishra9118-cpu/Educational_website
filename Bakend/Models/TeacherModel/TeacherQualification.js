@@ -1,39 +1,39 @@
 const mongoose = require('mongoose');
-const Teacher=require('./Auth_Schema')
+
 const TeacherQualificationSchema = new mongoose.Schema({
-   Teacher:{
+  teacher: {
     type: mongoose.Types.ObjectId,
-    ref: 'Teacher',
+    ref: 'Auth',
     required: true,
     unique: true,
-   },
-   Degree:{
+  },
+  degree: {
     type: String,
     required: true,
-   },
-    Institution:{
+  },
+  institution: {
     type: String,
-   },
-   certification:{
+  },
+  certification: {
     type: String,
-   },
-   YearOfExperience:{
+  },
+  yearsOfExperience: {
     type: Number,
     required: true,
-   },
-   Specilization:{
+  },
+  specialization: {
     type: String,
     required: true,
-   },
-   VerificationStatus:{
+  },
+  verificationStatus: {
     type: String,
     enum: ['pending', 'verified', 'rejected'],
     default: 'pending',
-   },
-   rejectionReason:{
+  },
+  rejectionReason: {
     type: String,
     default: null,
-   },
-  
-})
-mondule.exports = mongoose.model('TeacherQualification', TeacherQualificationSchema);
+  },
+});
+
+module.exports = mongoose.model('TeacherQualification', TeacherQualificationSchema);

@@ -2,13 +2,13 @@ const LiveSession = require("../Models/LiveSession");
 
 exports.createRequest = async (req, res) => {
   try {
-    const { teacher,student, scheduledAt, price, durationMinutes } = req.body;
+    const { teacher, scheduledAt, price, durationMinutes } = req.body;
     const session = await LiveSession.create({
       student: req.user.id,
-      teacher: teacherId,
+      teacher,
       scheduledAt,
       price,
-      durationMinutes
+      durationMinutes,
     });
     res.status(201).json({ success: true, session });
   } catch (err) {
@@ -46,6 +46,24 @@ exports.uploadVideoSolution = async (req, res) => {
     session.videoUrl = videoUrl;
     await session.save();
     res.status(200).json({ success: true, session });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+exports.getStudentSessions = async (req, res) => {
+  try {
+    const sessions = await LiveSession.find({ student: req.user.id }).populate("teacher", "name email");
+    res.status(200).json({ success: true, sessions });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+exports.getTeacherSessions = async (req, res) => {
+  try {
+    const sessions = await LiveSession.find({ teacher: req.user.id }).populate("student", "name email");
+    res.status(200).json({ success: true, sessions });
   } catch (err) {
     res.status(500).json({ message: "Internal server error", error: err.message });
   }

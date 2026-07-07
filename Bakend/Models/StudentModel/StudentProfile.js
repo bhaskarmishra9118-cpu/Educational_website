@@ -1,24 +1,27 @@
-const mongoose=require(mongoose)
+const mongoose = require("mongoose");
 
-const StudentProfileSchema=new mongoose.Schema({
-  cityName:{
-    type:String,
-    required:true
+const StudentProfileSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "Auth",
+    required: true,
+    unique: true,
   },
-  stateName:{
-    type:String,
-    required:true
+  cityName: {
+    type: String,
+    required: true,
   },
-  phoneno:{
-    type:mongoose.Types.Number,
-    ref:'Auth_Schema',
-    required:true
+  stateName: {
+    type: String,
+    required: true,
   },
-  profileImg:{
-    type:String,
-    required:true
+  phoneNo: {
+    type: String,
+    required: true,
   },
+  profileImg: {
+    type: String,
+  },
+});
 
-})
-
-module.exports=mongoose.model("StudentProfile",StudentProfileSchema)
+module.exports = mongoose.model("StudentProfile", StudentProfileSchema);

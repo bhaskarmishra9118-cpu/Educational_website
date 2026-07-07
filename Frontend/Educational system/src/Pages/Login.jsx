@@ -1,41 +1,48 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-//import { api } from "../lib/api"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginStart, loginSuccess, loginFailure } from "../features/authSlice";
+import { loginUser } from "../api/authapi";
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
   const change = (event) => {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const login = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
+    dispatch(loginStart());
 
     try {
-      const res = await api.post("/auth/login", formData)
-
+      const res = await loginUser(formData);
       if (res.data.success) {
-        alert("Login successful ✅")
-        navigate("/dashboard")
+        dispatch(loginSuccess(res.data));
+        if (res.data.user.role === "teacher") {
+          navigate("/teacher");
+        } else {
+          navigate("/student");
+        }
       }
     } catch (err) {
-      console.log(err)
+      dispatch(loginFailure(err.response?.data?.message || err.message));
       if (!err.response) {
-        alert("Network/CORS error. Check backend URL and Render CORS_ORIGINS.")
+        alert("Network/CORS error. Check backend URL and CORS settings.");
       } else {
-        alert("Login failed ❌")
+        alert(err.response.data?.message || "Login failed ❌");
       }
     }
-  }
+  };
 
   return (
     <div className="m-3 flex h-screen items-center justify-center rounded-lg bg-gradient bg-gray-700 from-indigo-300 via-purple-30 to-blue-200 shadow-md">
