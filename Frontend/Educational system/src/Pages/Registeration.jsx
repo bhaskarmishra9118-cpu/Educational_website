@@ -8,6 +8,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    role: "student",
   });
 
   const change = (event) => {
@@ -22,7 +23,8 @@ const Register = () => {
 
     try {
       await registerUser(formData);
-      window.alert("User Registered Successfully");
+      const roleLabel = formData.role === "teacher" ? "Teacher" : "Student";
+      window.alert(`${roleLabel} account registered successfully`);
       navigate("/login");
     } catch (err) {
       console.log(err.response?.data || err.message);
@@ -51,6 +53,7 @@ const Register = () => {
             placeholder="Enter your name"
             name="name"
             autoComplete="name"
+            value={formData.name}
             className="mb-4 rounded-md border-2 border-gray-300 p-2"
             onChange={change}
           />
@@ -63,6 +66,7 @@ const Register = () => {
             placeholder="Enter your email"
             name="email"
             autoComplete="email"
+            value={formData.email}
             className="mb-4 rounded-md border-2 border-gray-300 p-2"
             onChange={change}
           />
@@ -75,9 +79,26 @@ const Register = () => {
             placeholder="Enter your password"
             name="password"
             autoComplete="new-password"
+            value={formData.password}
             className="mb-4 rounded-md border-2 border-gray-300 p-2"
             onChange={change}
           />
+        </div>
+
+        <div className="mb-4 flex flex-col">
+          <label className="m-1">Select Role:</label>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={change}
+            className="rounded-md border-2 border-gray-300 p-2"
+          >
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+          </select>
+          <p className="mt-2 text-sm text-gray-500">
+            Teachers can answer questions and manage their earnings.
+          </p>
         </div>
 
         <button

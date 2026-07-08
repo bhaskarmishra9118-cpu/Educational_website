@@ -4,6 +4,8 @@ const User = require("../Models/Auth_Schema.js");
 
 exports.register = async (req, res) => {
   const { name, email, password, role } = req.body;
+  const normalizedRole = role === "teacher" ? "teacher" : "student";
+
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser)
@@ -12,9 +14,8 @@ exports.register = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password: hashedPassword,      
-      
-      role: role || "student",
+      password: hashedPassword,
+      role: normalizedRole,
     });
     const token = jwt.sign(
       { email: user.email, role: user.role, id: user._id },

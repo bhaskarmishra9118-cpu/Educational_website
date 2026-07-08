@@ -8,7 +8,10 @@ const TeacherDashboard = () => {
     <div className="space-y-6">
       <div className="rounded-lg bg-white p-6 shadow-md">
         <h1 className="text-2xl font-semibold">Welcome, {user?.name || "Teacher"}</h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 inline-flex rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-700">
+          Teacher account
+        </p>
+        <p className="mt-3 text-slate-600">
           Use the sidebar to review pending questions and manage your earnings.
         </p>
       </div>
