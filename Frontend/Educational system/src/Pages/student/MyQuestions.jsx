@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getStudentQuestions } from "../../api/questionapi";
+import { getStudentQuestions, confirmSatisfaction } from "../../api/questionapi";
 
 const MyQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -17,6 +17,27 @@ const MyQuestions = () => {
 
     fetchQuestions();
   }, []);
+
+  const handleConfirmSatisfaction = async (questionId) => {
+    const selectedQuestion = questions.find((question) => question._id === questionId);
+
+    try {
+      const res = await confirmSatisfaction(questionId);
+      if (res.data.success) {
+        const currentEarnings = Number(localStorage.getItem("teacherEarnings") || 0);
+        const amount = Number(selectedQuestion?.price || 0);
+        localStorage.setItem("teacherEarnings", String(currentEarnings + amount));
+      }
+
+      setQuestions((prev) =>
+        prev.map((question) =>
+          question._id === questionId ? { ...question, ...res.data.question } : question,
+        ),
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || "Unable to confirm satisfaction.");
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -36,6 +57,29 @@ const MyQuestions = () => {
               <div className="mt-3 text-sm text-slate-500">
                 Type: {question.questionType} • Price: ${question.price}
               </div>
+              {question.studentMessage && (
+                <div className="mt-3 rounded bg-slate-50 p-3 text-sm text-slate-700">
+                  <p>{question.studentMessage}</p>
+                  {question.teacherLink && (
+                    <a
+                      href={question.teacherLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-block font-medium text-blue-600 hover:underline"
+                    >
+                      Open shared link
+                    </a>
+                  )}
+                </div>
+              )}
+              {question.status === "awaiting_satisfaction" && (
+                <button
+                  onClick={() => handleConfirmSatisfaction(question._id)}
+                  className="mt-3 rounded bg-green-600 px-3 py-2 text-white hover:bg-green-700"
+                >
+                  Confirm Satisfaction
+                </button>
+              )}
             </div>
           ))}
         </div>

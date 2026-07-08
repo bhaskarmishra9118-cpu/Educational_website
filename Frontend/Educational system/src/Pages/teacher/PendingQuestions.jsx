@@ -20,19 +20,28 @@ const PendingQuestions = () => {
 
   const handleAccept = async (questionId) => {
     try {
-      await assignQuestion(questionId);
-      setQuestions((prev) => prev.filter((question) => question._id !== questionId));
+      const res = await assignQuestion(questionId);
+      setQuestions((prev) =>
+        prev.map((question) =>
+          question._id === questionId ? { ...question, ...res.data.question } : question,
+        ),
+      );
     } catch (err) {
       setError(err.response?.data?.message || "Unable to assign question.");
     }
   };
 
   const handleAnswer = async (questionId) => {
-    const answerText = prompt("Enter your answer");
-    if (!answerText) return;
+    const answerText = prompt("Enter your answer or guidance");
+    const videoUrl = prompt("Enter a video link if available (optional)", "");
+    if (!answerText && !videoUrl) return;
     try {
-      await answerQuestion(questionId, { answerText });
-      setQuestions((prev) => prev.filter((question) => question._id !== questionId));
+      const res = await answerQuestion(questionId, { answerText, videoUrl });
+      setQuestions((prev) =>
+        prev.map((question) =>
+          question._id === questionId ? { ...question, ...res.data.question } : question,
+        ),
+      );
     } catch (err) {
       setError(err.response?.data?.message || "Unable to submit answer.");
     }
@@ -53,18 +62,24 @@ const PendingQuestions = () => {
                 <span className="text-sm text-slate-500">{question.questionType}</span>
               </div>
               <p className="mt-2 text-slate-700">{question.Description}</p>
-              <div className="mt-3 flex gap-2">
-                <button
-                  onClick={() => handleAccept(question._id)}
-                  className="rounded bg-green-600 px-3 py-2 text-white hover:bg-green-700"
-                >
-                  Accept
-                </button>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {question.status === "pending" ? (
+                  <button
+                    onClick={() => handleAccept(question._id)}
+                    className="rounded bg-green-600 px-3 py-2 text-white hover:bg-green-700"
+                  >
+                    Start Recording
+                  </button>
+                ) : (
+                  <span className="rounded bg-amber-100 px-3 py-2 text-sm font-medium text-amber-700">
+                    Recording in progress
+                  </span>
+                )}
                 <button
                   onClick={() => handleAnswer(question._id)}
                   className="rounded bg-blue-600 px-3 py-2 text-white hover:bg-blue-700"
                 >
-                  Answer
+                  Send Video/Answer
                 </button>
               </div>
             </div>

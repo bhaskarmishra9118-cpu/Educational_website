@@ -19,3 +19,7 @@ export const answerQuestion = (questionId, data) => {
 export const assignQuestion = (questionId) => {
   return api.patch(`/api/questions/${questionId}/assign`);
 };
+
+export const confirmSatisfaction = (questionId) => {
+  return api.patch(`/api/questions/${questionId}/confirm-satisfaction`);
+};

@@ -8,6 +8,7 @@ const {
   getQuestionById,
   assignQuestion,
   answerQuestion,
+  confirmSatisfaction,
 } = require("../Controllers/Question");
 
 router.post("/", AuthMiddleware, createQuestion);
@@ -16,5 +17,6 @@ router.get("/teacher", AuthMiddleware, getTeacherQuestions);
 router.get("/:questionId", AuthMiddleware, getQuestionById);
 router.patch("/:questionId/assign", AuthMiddleware, assignQuestion);
 router.patch("/:questionId/answer", AuthMiddleware, answerQuestion);
+router.patch("/:questionId/confirm-satisfaction", AuthMiddleware, confirmSatisfaction);
 
 module.exports = router;

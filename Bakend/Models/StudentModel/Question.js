@@ -27,7 +27,7 @@ const StudentQuestionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "answered", "rejected"],
+    enum: ["pending", "recording", "awaiting_satisfaction", "completed", "rejected", "answered"],
     default: "pending",
   },
   questionType: {
@@ -39,6 +39,38 @@ const StudentQuestionSchema = new mongoose.Schema({
     type: String,
     enum: ["pending", "completed"],
     default: "pending",
+  },
+  recordingStarted: {
+    type: Boolean,
+    default: false,
+  },
+  recordingStartedAt: {
+    type: Date,
+    default: null,
+  },
+  studentNotified: {
+    type: Boolean,
+    default: false,
+  },
+  satisfactionConfirmed: {
+    type: Boolean,
+    default: false,
+  },
+  satisfactionConfirmedAt: {
+    type: Date,
+    default: null,
+  },
+  studentMessage: {
+    type: String,
+    default: null,
+  },
+  teacherMessage: {
+    type: String,
+    default: null,
+  },
+  teacherLink: {
+    type: String,
+    default: null,
   },
   price: {
     type: Number,
